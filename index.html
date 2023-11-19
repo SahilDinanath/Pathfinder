@@ -5,12 +5,71 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite + TS</title>
+  <title>Infinite Grid</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 50px);
+      grid-gap: 2px;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .grid-item {
+      width: 50px;
+      height: 50px;
+      background-color: lightblue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
+  <div id="grid-container"></div>
+
+  <script>
+    const gridContainer = document.getElementById('grid-container');
+    const size = 50
+
+    const grid = new Array(size);
+    for (let i = 0; i < grid.length; i++) {
+      grid[i] = new Array(size);
+    }
+
+    function createGridItem() {
+      const gridItem = document.createElement('div');
+      gridItem.className = 'grid-item';
+
+      gridItem.addEventListener('click', function (event) {
+        gridItem.style.backgroundColor = "red";
+      })
+
+      gridContainer.appendChild(gridItem);
+      return gridItem;
+    }
+
+    function populateGrid(grid) {
+      // Populate the grid initially
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+          createGridItem();
+          grid[i][j] = createGridItem();
+        }
+      }
+    }
+
+    // Initial population of the grid
+    populateGrid(grid);
+
+  </script>
 </body>
 
 </html>
