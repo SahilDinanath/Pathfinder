@@ -14,8 +14,7 @@
 
     #grid-container {
       display: grid;
-      grid-template-columns: repeat(40, 50px);
-      grid-template-rows: repeat(40, 50px);
+      grid-template-columns: repeat(15, 50px);
       grid-gap: 2px;
       justify-content: center;
       padding: 10px;
@@ -24,7 +23,6 @@
     .grid-item {
       width: 50px;
       height: 50px;
-      background-color: lightblue;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -52,7 +50,7 @@
     /* UI setup */
     //grid initialisation
     const gridContainer = document.getElementById('grid-container');
-    const size = 50
+    const size = 15
     const grid = new Array(size);
     for (let i = 0; i < grid.length; i++) {
       grid[i] = new Array(size);
@@ -88,7 +86,6 @@
       // Populate the grid initially
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
-          createGridItem();
           grid[i][j] = createGridItem();
         }
       }
@@ -99,6 +96,9 @@
 
 
     /*search algorithms*/
+    //0 = empty, 1 = start position, 2 = wall, 3 = goal
+    const start = 1, wall = 2, goal = 3, visited = 4;
+
     //creates seperate matrix to perform search algorithms on
     const matrix = new Array(size);
     for (let i = 0; i < matrix.length; i++) {
@@ -106,7 +106,7 @@
     }
 
     //convert current current grid display into uniform matrix format
-    function convertGridToMatrix(grid) {
+    function convertGridToMatrix(matrix, grid) {
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
           switch (grid[i][j].style.backgroundColor) {
@@ -114,21 +114,78 @@
               matrix[i][j] = 0;
               break;
             case startColor:
-              matrix[i][j] = 1;
+              matrix[i][j] = start;
               break;
             case wallColor:
-              matrix[i][j] = 2;
+              matrix[i][j] = wall;
               break;
             case goalColor:
-              matrix[i][j] = 3;
+              matrix[i][j] = goal;
               break;
           }
         }
       }
     }
-    function depthFirstSearch() {
-      convertGridToMatrix(grid)
+    function findElementInMatrix(matrix, objectType) {
+      for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[0].length; j++) {
+          if (matrix[i][j] == objectType) {
+            return {x: j, y: i};
+          }
+        }
+      }
+    }
 
+    const possibleMoves = [
+      {x: 0, y: -1},
+      {x: -1, y: 0},
+      {x: 0, y: 1},
+      {x: 1, y: 0},
+    ];
+
+    async function depthFirstSearch() {
+      convertGridToMatrix(matrix, grid);
+      const startPosition = findElementInMatrix(matrix, start);
+      const goalPosition = findElementInMatrix(matrix, goal);
+      const stack = []
+      stack.push(startPosition);
+      while (stack.length > 0) {
+        const current = stack.pop();
+        //check if goal is reached
+        console.log(current);
+        if (matrix[current.y][current.x] == goal) {
+          break;
+        }
+
+        //get all possible moves
+        for (let i = 0; i < possibleMoves.length; i++) {
+          const newX = current.x + possibleMoves[i].x;
+          const newY = current.y + possibleMoves[i].y;
+          //bounds check
+          if (newX > matrix[0].length - 1 || newX < 0) {
+            continue;
+          }
+          if (newY > matrix.length - 1 || newY < 0) {
+            continue;
+          }
+
+          //wallCheck
+          if (matrix[newY][newX] == wall) {
+            continue;
+          }
+
+          if (matrix[newY][newX] == visited) {
+            continue;
+          }
+
+          //if all conditions are satisfied
+          stack.push({x: newX, y: newY})
+
+        }
+        matrix[current.y][current.x] = visited;
+        await new Promise(r => setTimeout(r, 200));
+        grid[current.y][current.x].style.backgroundColor = 'purple';
+      }
     }
   </script>
 </body>
