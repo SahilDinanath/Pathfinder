@@ -14,7 +14,8 @@
 
     #grid-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, 50px);
+      grid-template-columns: repeat(40, 50px);
+      grid-template-rows: repeat(40, 50px);
       grid-gap: 2px;
       justify-content: center;
       padding: 10px;
@@ -33,29 +34,56 @@
 </head>
 
 <body>
+  <button onclick="setColor(0)">Start</button>
+  <button onclick="setColor(1)">Wall</button>
+  <button onclick="setColor(2)">Goal</button>
+  <button onclick="depthFirstSearch()">Run</button>
   <div id="grid-container"></div>
 
   <script>
+    //settings
+    let color;
+    let defaultColor = 'lightblue';
+    let startColor = 'green'
+    let wallColor = 'red'
+    let goalColor = 'yellow'
+    let objectType = [startColor, wallColor, goalColor]
+
+    /* UI setup */
+    //grid initialisation
     const gridContainer = document.getElementById('grid-container');
     const size = 50
-
     const grid = new Array(size);
     for (let i = 0; i < grid.length; i++) {
       grid[i] = new Array(size);
     }
 
+    //current color selection
+    function setColor(c) {
+      color = objectType[c];
+    }
+
+    //creates cell
     function createGridItem() {
       const gridItem = document.createElement('div');
       gridItem.className = 'grid-item';
-
-      gridItem.addEventListener('click', function (event) {
-        gridItem.style.backgroundColor = "red";
+      //set cell to default color
+      gridItem.style.backgroundColor = defaultColor;
+      //toggles sets or resets color depending on color button clicked
+      gridItem.addEventListener('click', () => {
+        if (gridItem.style.backgroundColor != defaultColor) {
+          gridItem.style.backgroundColor = defaultColor;
+        }
+        else {
+          gridItem.style.backgroundColor = color;
+        }
       })
 
       gridContainer.appendChild(gridItem);
       return gridItem;
     }
 
+    //creates Grid
     function populateGrid(grid) {
       // Populate the grid initially
       for (let i = 0; i < grid.length; i++) {
@@ -69,6 +97,39 @@
     // Initial population of the grid
     populateGrid(grid);
 
+
+    /*search algorithms*/
+    //creates seperate matrix to perform search algorithms on
+    const matrix = new Array(size);
+    for (let i = 0; i < matrix.length; i++) {
+      matrix[i] = new Array(size);
+    }
+
+    //convert current current grid display into uniform matrix format
+    function convertGridToMatrix(grid) {
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+          switch (grid[i][j].style.backgroundColor) {
+            case defaultColor:
+              matrix[i][j] = 0;
+              break;
+            case startColor:
+              matrix[i][j] = 1;
+              break;
+            case wallColor:
+              matrix[i][j] = 2;
+              break;
+            case goalColor:
+              matrix[i][j] = 3;
+              break;
+          }
+        }
+      }
+    }
+    function depthFirstSearch() {
+      convertGridToMatrix(grid)
+
+    }
   </script>
 </body>
 
