@@ -1,4 +1,4 @@
-# Pathfinder: Pathfinding Visualization Website
+![image](https://github.com/SahilDinanath/Pathfinder/assets/46680594/200bf745-ebae-4799-9e73-e68bc1bae7f0)# Pathfinder: Pathfinding Visualization Website
 
 ![Pathfinder Logo](pathfinder_logo.png)
 
@@ -13,9 +13,9 @@ Welcome to Pathfinder, a web-based tool for visualizing pathfinding algorithms i
 - **Custom Grids:** Create custom grids to simulate different environments and challenges.
 - **Step-by-Step Control:** Control the speed of the visualization and step through the algorithm's execution.
 
-## Demo
+## Website
 
-Check out our live demo at [pathfinder-demo.com](https://pathfinder-demo.com) to experience the visualization firsthand.
+Check out website at [pathfinder-sigma.vercel.app/](https://pathfinder-sigma.vercel.app/) to experience the visualization firsthand.
 
 ## Getting Started
 
@@ -25,7 +25,7 @@ Check out our live demo at [pathfinder-demo.com](https://pathfinder-demo.com) to
 
 ### Installation
 
-No installation is required. Simply visit our website at [pathfinder-demo.com](https://pathfinder-demo.com) and start visualizing pathfinding algorithms.
+No installation is required. 
 
 ## Usage
 
