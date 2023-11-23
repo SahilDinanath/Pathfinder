@@ -36,6 +36,7 @@
   <button onclick="setColor(1)">Wall</button>
   <button onclick="setColor(2)">Goal</button>
   <button onclick="depthFirstSearch()">Run</button>
+  <button onclick="reset()">Reset</button>
   <div id="grid-container"></div>
 
   <script>
@@ -45,7 +46,11 @@
     let startColor = 'green'
     let wallColor = 'red'
     let goalColor = 'yellow'
+    let pathColor = 'purple'
+    let recursedPathColor = 'orange'
     let objectType = [startColor, wallColor, goalColor]
+    let stopped = false;
+    let speed = 50;
 
     /* UI setup */
     //grid initialisation
@@ -77,7 +82,6 @@
         }
       })
 
-      gridContainer.appendChild(gridItem);
       return gridItem;
     }
 
@@ -87,23 +91,63 @@
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
           grid[i][j] = createGridItem();
+          gridContainer.appendChild(grid[i][j]);
         }
       }
     }
+
+    function reset() {
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+          //set maze color to default
+          grid[i][j].style.backgroundColor = defaultColor;
+          //reset all matrix cells to default 0 
+          matrix[i][j] = 0;
+
+          stopped = true;
+        }
+      }
+    }
+
+    //UI style settings
+    const barOuter = document.querySelector(".bar-outer");
+    const options = document.querySelectorAll(".bar-grey .option");
+    let current = 1;
+    options.forEach((option, i) => (option.index = i + 1));
+    options.forEach(option =>
+      option.addEventListener("click", function () {
+        barOuter.className = "bar-outer";
+        barOuter.classList.add(`pos${option.index}`);
+        if (option.index > current) {
+          barOuter.classList.add("right");
+        } else if (option.index < current) {
+          barOuter.classList.add("left");
+        }
+        current = option.index;
+      }));
 
     // Initial population of the grid
     populateGrid(grid);
 
 
     /*search algorithms*/
+
     //0 = empty, 1 = start position, 2 = wall, 3 = goal
     const start = 1, wall = 2, goal = 3, visited = 4;
+
 
     //creates seperate matrix to perform search algorithms on
     const matrix = new Array(size);
     for (let i = 0; i < matrix.length; i++) {
       matrix[i] = new Array(size);
     }
+
+    const possibleMoves = [
+      {x: 0, y: -1},
+      {x: -1, y: 0},
+      {x: 0, y: 1},
+      {x: 1, y: 0},
+    ];
 
     //convert current current grid display into uniform matrix format
     function convertGridToMatrix(matrix, grid) {
@@ -136,14 +180,11 @@
       }
     }
 
-    const possibleMoves = [
-      {x: 0, y: -1},
-      {x: -1, y: 0},
-      {x: 0, y: 1},
-      {x: 1, y: 0},
-    ];
 
     async function depthFirstSearch() {
+      //when algorithm is run, stopped is reset to false
+      stopped = false;
+
       convertGridToMatrix(matrix, grid);
       const startPosition = findElementInMatrix(matrix, start);
       const goalPosition = findElementInMatrix(matrix, goal);
@@ -175,6 +216,8 @@
           }
 
           if (matrix[newY][newX] == visited) {
+            //visualize visited cells
+            grid[current.y][current.x].style.backgroundColor = recursedPathColor;
             continue;
           }
 
@@ -182,9 +225,19 @@
           stack.push({x: newX, y: newY})
 
         }
+
         matrix[current.y][current.x] = visited;
-        await new Promise(r => setTimeout(r, 200));
-        grid[current.y][current.x].style.backgroundColor = 'purple';
+        //timeout slows down algorithm so users can see it 
+        await new Promise(r => setTimeout(r, speed));
+
+        //checks to see if algorithm was aborted before updating the color of the cell
+        if (stopped) {
+          return;
+        }
+
+        //renders path 
+        grid[current.y][current.x].style.backgroundColor = pathColor;
+
       }
     }
   </script>
