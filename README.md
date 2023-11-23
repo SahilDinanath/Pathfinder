@@ -15,7 +15,7 @@ Welcome to Pathfinder, a web-based tool for visualizing pathfinding algorithms i
 
 ## Website
 
-Check out website at [pathfinder-sigma.vercel.app/](https://pathfinder-sigma.vercel.app/) to experience the visualization firsthand.
+Check out the website at [pathfinder-sigma.vercel.app/](https://pathfinder-sigma.vercel.app/) to experience the visualization firsthand.
 
 ## Getting Started
 
