@@ -1,6 +1,6 @@
-![image](https://github.com/SahilDinanath/Pathfinder/assets/46680594/200bf745-ebae-4799-9e73-e68bc1bae7f0)# Pathfinder: Pathfinding Visualization Website
+# Pathfinder: Pathfinding Visualization Website
 
-![Pathfinder Logo](pathfinder_logo.png)
+![path_finder_demo](https://github.com/SahilDinanath/Pathfinder/assets/46680594/ce65778a-3731-4992-b9a1-7a58e28b071d)
 
 ## Introduction
 
