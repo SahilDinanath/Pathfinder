@@ -61,8 +61,12 @@
       <button onclick="depthFirstSearch()" class="btn">Run</button>
     </div>
     <div class="p-2">
-      <button onclick="reset()" class="btn">Reset</button>
+      <button onclick="pathReset()" class="btn">Reset Path</button>
     </div>
+    <div class="p-2">
+      <button onclick="fullReset()" class="btn">Full Reset</button>
+    </div>
+
   </div>
 
 
@@ -125,7 +129,8 @@
       }
     }
 
-    function reset() {
+    function fullReset() {
+      stopped = true;
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
           //set maze color to default
@@ -133,7 +138,21 @@
           //reset all matrix cells to default 0 
           matrix[i][j] = 0;
 
-          stopped = true;
+        }
+      }
+    }
+    function pathReset() {
+      stopped = true;
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+          //set maze color to default
+          let color = grid[i][j].style.backgroundColor;
+          if (color == pathColor || color == recursedPathColor) {
+            grid[i][j].style.backgroundColor = defaultColor;
+            //reset all matrix cells to default 0 
+            matrix[i][j] = 0;
+          }
+
         }
       }
     }
@@ -207,10 +226,11 @@
       const goalPosition = findElementInMatrix(matrix, goal);
       const stack = []
       stack.push(startPosition);
-      while (stack.length > 0) {
 
+      while (stack.length > 0) {
         const current = stack.pop();
-        //check if goal is reached
+
+        //check if goal is reached, maintains goal color 
         console.log(current);
         if (matrix[current.y][current.x] == goal) {
           break;
@@ -245,6 +265,7 @@
         }
 
         matrix[current.y][current.x] = visited;
+
         //update speed if required for dynamic update
         speed = getSpeed();
         //timeout slows down algorithm so users can see it 
@@ -255,7 +276,13 @@
           return;
         }
 
-        //renders path 
+        /*renders path*/
+
+        //doesn't overwrite start color
+        if (grid[current.y][current.x].style.backgroundColor == startColor) {
+          continue;
+        }
+        //overwrites all other cells
         grid[current.y][current.x].style.backgroundColor = pathColor;
 
       }
