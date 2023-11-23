@@ -38,7 +38,7 @@
     <h1>Speed</h1>
   </div>
   <div class="px-20">
-    <input type="range" min="0" max="100" value="40" class="range" />
+    <input type="range" min="0" max="100" value="50" class="range" id="speed" />
   </div>
 
   <div class="align-middle absolute inset-y-1/3">
@@ -79,7 +79,7 @@
     let recursedPathColor = 'orange'
     let objectType = [startColor, wallColor, goalColor]
     let stopped = false;
-    let speed = 50;
+    let speed = getSpeed();
 
     /* UI setup */
     //grid initialisation
@@ -138,6 +138,9 @@
       }
     }
 
+    function getSpeed() {
+      return 100 - document.getElementById("speed").value;
+    }
     // Initial population of the grid
     populateGrid(grid);
 
@@ -197,6 +200,7 @@
       //when algorithm is run, stopped is reset to false
       stopped = false;
 
+
       convertGridToMatrix(matrix, grid);
       const startPosition = findElementInMatrix(matrix, start);
       const goalPosition = findElementInMatrix(matrix, goal);
@@ -239,6 +243,8 @@
         }
 
         matrix[current.y][current.x] = visited;
+        //update speed if required for dynamic update
+        speed = getSpeed();
         //timeout slows down algorithm so users can see it 
         await new Promise(r => setTimeout(r, speed));
 
