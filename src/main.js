@@ -169,16 +169,16 @@
       //when algorithm is run, stopped is reset to false
       stopped = false;
 
-      //creates seperate matrix to perform search algorithms on
+      const stack = []
       const matrix = new Array(size);
       for (let i = 0; i < matrix.length; i++) {
         matrix[i] = new Array(size);
       }
 
       convertGridToMatrix(matrix, grid);
+
       const startPosition = findElementInMatrix(matrix, start);
-      //const goalPosition = findElementInMatrix(matrix, goal);
-      const stack = []
+  
       stack.push(startPosition);
 
       while (stack.length > 0) {
@@ -189,8 +189,8 @@
           break;
         }
 
-        // keep start color visible and doesn't overwrite start color
-        if (grid[current.y][current.x].style.backgroundColor != startColor) {
+        // keep start color visible and doesn't overwrite start color when showing current position
+        if (matrix[current.y][current.x] != start) {
           //shows the current location otherwise
           grid[current.y][current.x].style.backgroundColor = recursedPathColor;
         }
@@ -236,17 +236,16 @@
         }
 
         /*renders path*/
-
         //doesn't overwrite start color
         if (grid[current.y][current.x].style.backgroundColor == startColor) {
           continue;
         }
-
         //overwrites all other cells
         grid[current.y][current.x].style.backgroundColor = pathColor;
 
       }
     }
+
     async function breathFirstSearch() {
       //when algorithm is run, stopped is reset to false
       stopped = false;
