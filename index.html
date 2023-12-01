@@ -47,13 +47,14 @@
       <h1>Block Types:</h1>
     </div>
     <div class="p-2">
-      <input type="radio" name="color-radio" aria-label="Start" onclick="setColor(0)" class="btn" checked />
+      <input type="radio" name="color-radio" aria-label="Start" onclick="setColor(0)" class="btn" autocomplete="off"
+        checked />
     </div>
     <div class="p-2">
-      <input type="radio" name="color-radio" aria-label="Wall" onclick="setColor(1)" class="btn" />
+      <input type="radio" name="color-radio" aria-label="Wall" onclick="setColor(1)" class="btn" autocomplete="off" />
     </div>
     <div class="p-2">
-      <input type="radio" name="color-radio" aria-label="Goal" onclick="setColor(2)" class="btn" />
+      <input type="radio" name="color-radio" aria-label="Goal" onclick="setColor(2)" class="btn" autocomplete="off" />
     </div>
     <div class="p-2">
       <h1>Playback:</h1>
@@ -75,25 +76,25 @@
     </div>
     <div class="p-2">
       <input type="radio" name="algorithm-radio" aria-label="Depth First Search" onclick="setAlgorithm(0)" class="btn"
-        checked />
+        autocomplete="off" checked />
     </div>
     <div class="p-2">
       <input type="radio" name="algorithm-radio" aria-label="Breadth First Search" onclick="setAlgorithm(1)"
-        class="btn" />
+        autocomplete="off" class="btn" />
     </div>
     <!-- <div class="p-2"> -->
     <!--   <input type="radio" name="algorithm-radio" aria-label="Dijkstra's Algorithm" onclick="setAlgorithm(2)" -->
     <!--     class="btn" /> -->
     <!-- </div> -->
     <div class="p-2">
-      <input type="radio" name="algorithm-radio" aria-label="A* Algorithm" onclick="setAlgorithm(2)" class="btn" />
+      <input type="radio" name="algorithm-radio" aria-label="A* Algorithm" onclick="setAlgorithm(2)" autocomplete="off"
+        class="btn" />
     </div>
   </div>
 
   <div class="py-5">
     <div id="grid-container"></div>
   </div>
-
   <script>
     /* Settings */
     //colors
