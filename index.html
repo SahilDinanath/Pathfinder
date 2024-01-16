@@ -278,12 +278,16 @@
 
       convertGridToMatrix(matrix, grid);
 
-      const startPosition = findElementInMatrix(matrix, start);
-
+      var startPosition = findElementInMatrix(matrix, start);
+      startPosition = {
+         x: startPosition.x,
+         y: startPosition.y,
+         parent: null
+         }
       stack.push(startPosition);
-
+      var current = null;
       while (stack.length > 0) {
-        const current = stack.pop();
+        current = stack.pop();
 
         //check if goal is reached, maintains goal color 
         if (matrix[current.y][current.x] == goal) {
@@ -320,7 +324,7 @@
           }
 
           //all conditions are satisfied
-          stack.push({x: newX, y: newY})
+          stack.push({x: newX, y: newY, parent: current})
         }
 
         matrix[current.y][current.x] = visited;
@@ -345,6 +349,7 @@
         grid[current.y][current.x].style.backgroundColor = pathColor;
 
       }
+      highlightRecursedPath(current.parent)
     }
 
     async function breathFirstSearch() {
@@ -358,13 +363,18 @@
       }
 
       convertGridToMatrix(matrix, grid);
-      const startPosition = findElementInMatrix(matrix, start);
+      var startPosition = findElementInMatrix(matrix, start);
+      var startPosition = {
+         x: startPosition.x,
+         y: startPosition.y,
+         parent: null
+         }
       //const goalPosition = findElementInMatrix(matrix, goal);
       const stack = []
       stack.push(startPosition);
-
+      var current = null;
       while (stack.length > 0) {
-        const current = stack.shift();
+        current = stack.shift();
 
         //check if goal is reached, maintains goal color 
         if (grid[current.y][current.x].style.backgroundColor == goalColor) {
@@ -401,7 +411,7 @@
           }
 
           //all conditions are satisfied
-          stack.push({x: newX, y: newY})
+          stack.push({x: newX, y: newY, parent: current})
           matrix[newY][newX] = visited;
         }
 
@@ -428,6 +438,7 @@
         grid[current.y][current.x].style.backgroundColor = pathColor;
 
       }
+      highlightRecursedPath(current.parent);
     }
 
     async function aStar() {
@@ -449,7 +460,8 @@
         y: startPosition.y,
         f: 0,
         g: 0,
-        h: 0
+        h: 0,
+        parent: null
       }
       var goalPosition = findElementInMatrix(matrix, goal);
       goalPosition = {
@@ -457,14 +469,15 @@
         y: goalPosition.y,
         f: 0,
         g: 0,
-        h: 0
+        h: 0,
       }
 
       opened.push(startPosition);
 
       var found = false;
+      var current = null;
       while (opened.length > 0 && found == false) {
-        var current = opened[0];
+        current = opened[0];
         var current_index = 0;
 
         for (let i = 0; i < opened.length; i++) {
@@ -510,7 +523,7 @@
           }
 
           //all conditions are satisfied
-          children.push({f: 0, g: 0, h: 0, x: newX, y: newY})
+          children.push({f: 0, g: 0, h: 0, x: newX, y: newY, parent: current})
         }
 
         for (let i = 0; i < children.length; i++) {
@@ -568,6 +581,16 @@
         grid[current.y][current.x].style.backgroundColor = pathColor;
 
       }
+      //colors the path to goal
+      highlightRecursedPath(current);
+    }
+    async function highlightRecursedPath(current){
+      while(current.parent != null){
+        grid[current.y][current.x].style.backgroundColor = recursedPathColor;
+        current = current.parent;
+        speed = getSpeed();
+        await new Promise(r => setTimeout(r, speed));
+         }
     }
   </script>
 </body>
